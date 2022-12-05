@@ -20,7 +20,7 @@ public class Condutor {
 	@Column (nullable = false)
 	private int pontuacao;
 	
-	@OneToOne
+	@OneToOne (fetch = FetchType.LAZY)
 	@JoinColumn (name = "veiculo_fk", referencedColumnName = "placa")
 	private Veiculo veiculo;
 

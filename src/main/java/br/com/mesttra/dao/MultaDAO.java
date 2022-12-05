@@ -1,12 +1,11 @@
 package br.com.mesttra.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
 
-import br.com.mesttra.entity.Condutor;
-import br.com.mesttra.entity.Multa;
-import br.com.mesttra.entity.Veiculo;
+import br.com.mesttra.entity.*;
 
 public class MultaDAO {
 
@@ -17,7 +16,18 @@ public class MultaDAO {
 		
 	}
 	
-	public void adicionarMulta(Multa multa, Veiculo veiculo, Condutor condutor) {		
+	public void adicionarMulta(Multa multa, Veiculo veiculo, Condutor condutor) {	
+		List<Multa> multas = veiculo.getMultas();
+		if (multas == null || multas.isEmpty()) {
+			multas = new ArrayList<Multa>();
+		}
+		
+		multas.add(multa);
+		veiculo.setMultas(multas);
+		
+		multa.setVeiculo(veiculo);
+		condutor.setPontuacao(condutor.getPontuacao() + multa.getPontuacao());
+		
 		manager.getTransaction().begin();
 		manager.persist(multa);
 		manager.merge(veiculo);

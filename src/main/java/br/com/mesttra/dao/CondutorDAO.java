@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import br.com.mesttra.entity.Condutor;
+import br.com.mesttra.entity.*;
 
 public class CondutorDAO {
 

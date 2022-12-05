@@ -23,7 +23,6 @@ public class MultaUI {
 	public static Multa cadastrar(Scanner sc) {
 		Multa multa = new Multa();
 		
-		System.out.println();
 		System.out.print("Valor: ");
 		double valor = sc.nextDouble();
 		

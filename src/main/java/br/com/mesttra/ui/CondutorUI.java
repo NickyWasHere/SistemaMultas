@@ -25,7 +25,6 @@ public class CondutorUI {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		Condutor condutor = new Condutor();
 		
-		System.out.println();
 		System.out.print("Número da CNH: ");
 		String nroCnh = sc.next();
 		

@@ -1,8 +1,9 @@
 package br.com.mesttra.ui;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
-import br.com.mesttra.entity.Veiculo;
+import br.com.mesttra.entity.*;
 
 public class VeiculoUI {
 
@@ -14,7 +15,8 @@ public class VeiculoUI {
 		System.out.println("2-Remover veículo");
 		System.out.println("3-Consultar veículo");
 		System.out.println("4-Listar veículos");
-		System.out.println("5-Voltar para menu principal");
+		System.out.println("5-Vender veículo");
+		System.out.println("6-Voltar para menu principal");
 		System.out.println();
 		System.out.print("Escolha uma opção: ");
 	}
@@ -22,7 +24,6 @@ public class VeiculoUI {
 	public static Veiculo cadastrar(Scanner sc) {
 		Veiculo veiculo = new Veiculo();
 		
-		System.out.println();
 		System.out.print("Placa: ");
 		String placa = sc.next();
 		
@@ -39,6 +40,7 @@ public class VeiculoUI {
 		veiculo.setModelo(modelo);
 		veiculo.setMarca(marca);
 		veiculo.setAno(ano);
+		veiculo.setMultas(new ArrayList<Multa>());
 		
 		return veiculo;
 	}

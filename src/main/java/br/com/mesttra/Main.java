@@ -9,14 +9,13 @@ import br.com.mesttra.entity.*;
 import br.com.mesttra.ui.*;
 
 public class Main {
-
 	public static Scanner sc = new Scanner(System.in);
 	
 	private static CondutorDAO condutorDAO = new CondutorDAO();
 	private static VeiculoDAO veiculoDAO = new VeiculoDAO();
 	private static MultaDAO multaDAO = new MultaDAO();
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
 		while (true) {
 			int resp = inicio();
 			
@@ -108,7 +107,9 @@ public class Main {
 		
 		Condutor condutor = condutorDAO.verCondutor(cnh);
 		if (condutor == null) {
+			System.out.println();
 			System.err.println("Nenhum condutor encontrado");
+			
 		} else {
 			System.out.println(condutor);
 		}
@@ -120,7 +121,8 @@ public class Main {
 		System.out.println();
 		
 		List<Condutor> condutores = condutorDAO.listarCondutores();
-		if (condutores.isEmpty()) {
+		if (condutores == null || condutores.isEmpty()) {
+			System.out.println();
 			System.err.println("Nenhum condutor encontrado");
 			
 		} else {
@@ -154,6 +156,10 @@ public class Main {
 				break;
 				
 			case 5:
+				venderVeiculo();
+				break;
+				
+			case 6:
 				return;
 				
 			default:
@@ -173,12 +179,16 @@ public class Main {
 		
 		Condutor condutor = condutorDAO.verCondutor(cnh);
 		if (condutor == null) {
+			System.out.println();
 			System.err.println("Este condutor não está cadastrado");
+		
+		} else if (condutor.getVeiculo()!=null) {
+			System.out.println();
+			System.err.println("Este condutor já possui um veículo cadastrado");
 			
 		} else {
 			Veiculo veiculo = VeiculoUI.cadastrar(sc);
-			veiculo.setCondutor(condutor);
-			condutor.setVeiculo(veiculo);
+			
 			veiculoDAO.adicionarVeiculo(veiculo, condutor);
 			
 		}
@@ -205,7 +215,9 @@ public class Main {
 		
 		Veiculo veiculo = veiculoDAO.verVeiculo(placa);
 		if (veiculo == null) {
+			System.out.println();
 			System.err.println("Nenhum veículo encontrado");
+			
 		} else {
 			System.out.println(veiculo);
 		}
@@ -218,7 +230,8 @@ public class Main {
 		
 		List<Veiculo> veiculos = veiculoDAO.listarVeiculos();
 		
-		if (veiculos.isEmpty()) {
+		if (veiculos == null || veiculos.isEmpty()) {
+			System.out.println();
 			System.err.println("Nenhum veículo encontrado");
 			
 		} else {
@@ -226,6 +239,56 @@ public class Main {
 				System.out.println(v);
 			}
 			
+		}
+	}
+	
+	private static void venderVeiculo() {
+		System.out.println();
+		System.out.println("Vender veículo");
+		System.out.println();
+		
+		System.out.print("CNH do vendedor: ");
+		String origem = sc.next();
+		
+		System.out.print("CNH do comprador: ");
+		String destino = sc.next();
+		
+		Condutor vendedor = condutorDAO.verCondutor(origem);
+		Condutor comprador = condutorDAO.verCondutor(destino);
+		
+		if (vendedor == null || comprador == null) {
+			System.out.println();
+			System.err.println("Condutor não encontrado");
+			
+		} else if (vendedor.equals(comprador)) {
+			System.out.println();
+			System.err.println("Vendedor e comprador não podem ser a mesma pessoa");
+			
+		} else {
+			System.out.print("Placa do carro: ");
+			String placa = sc.next();
+			Veiculo veiculo = veiculoDAO.verVeiculo(placa);
+			
+			if (veiculo == null) {
+				System.out.println();
+				System.err.println("Nenhum veículo encontrado");
+				
+			} else  {
+				String cnhDono = veiculo.getCondutor().getNroCnh();
+		
+				if (!cnhDono.contentEquals(vendedor.getNroCnh())) {
+					System.out.println();
+					System.err.println("Este veículo não pertence ao vendedor");
+					
+				} else if (!(veiculo.getMultas().isEmpty())) {
+					System.out.println();
+					System.err.println("Veículo não pode ser vendido pois tem multas não resolvidas");
+					
+				} else {
+					veiculoDAO.venderVeiculo(vendedor, comprador, veiculo);
+					
+				}
+			}
 		}
 	}
 	
@@ -275,22 +338,12 @@ public class Main {
 		
 		Veiculo veiculo = veiculoDAO.verVeiculo(placa);
 		if (veiculo == null) {
+			System.out.println();
 			System.err.println("Este veículo não está cadastrado");
 			
 		} else {
 			Multa multa = MultaUI.cadastrar(sc);
 			Condutor condutor = condutorDAO.verCondutor(veiculo.getCondutor().getNroCnh());
-			
-			List<Multa> multas = veiculo.getMultas();
-			if (multas.isEmpty() || multas == null) {
-				multas = new ArrayList<Multa>();
-			}
-			
-			multas.add(multa);
-			veiculo.setMultas(multas);
-			
-			multa.setVeiculo(veiculo);
-			condutor.setPontuacao(condutor.getPontuacao() + multa.getPontuacao());
 			
 			multaDAO.adicionarMulta(multa, veiculo, condutor);
 			
@@ -302,7 +355,7 @@ public class Main {
 		System.out.println("Remover multa");
 		System.out.println();
 		
-		System.out.print("Código ");
+		System.out.print("Código: ");
 		int codigoMulta = sc.nextInt();
 		
 		multaDAO.removerMulta(codigoMulta);
@@ -318,6 +371,7 @@ public class Main {
 		
 		Multa multa = multaDAO.verMulta(codigoMulta);
 		if (multa == null) {
+			System.out.println();
 			System.err.println("Nenhuma multa encontrada");
 			
 		} else {
@@ -335,10 +389,12 @@ public class Main {
 		
 		Veiculo veiculo = veiculoDAO.verVeiculo(placa);
 		if (veiculo == null) {
+			System.out.println();
 			System.err.println("Nenhum veículo encontrado");
 			
 		} else {
-			if (veiculo.getMultas().isEmpty()) {
+			if (veiculo.getMultas().isEmpty()){
+				System.out.println();
 				System.err.println("Nenhuma multa encontrada");
 				
 			} else {	
@@ -356,7 +412,8 @@ public class Main {
 		
 		List<Multa> multas = multaDAO.listarMultas();
 		
-		if (multas.isEmpty()) {
+		if (multas == null || multas.isEmpty()) {
+			System.out.println();
 			System.err.println("Nenhuma multa encontrada");
 			
 		} else {

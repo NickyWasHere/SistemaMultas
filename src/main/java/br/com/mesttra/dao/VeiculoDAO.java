@@ -4,8 +4,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import br.com.mesttra.entity.Condutor;
-import br.com.mesttra.entity.Veiculo;
+import br.com.mesttra.entity.*;
 
 public class VeiculoDAO {
 
@@ -17,6 +16,9 @@ public class VeiculoDAO {
 	}
 	
 	public void adicionarVeiculo(Veiculo veiculo, Condutor condutor) {
+		veiculo.setCondutor(condutor);
+		condutor.setVeiculo(veiculo);
+		
 		manager.getTransaction().begin();
 		manager.persist(veiculo);
 		manager.merge(condutor);
@@ -32,8 +34,12 @@ public class VeiculoDAO {
 			return;
 		}
 		
+		Condutor condutor = veiculo.getCondutor();
+		condutor.setVeiculo(null);
+		
 		manager.getTransaction().begin();
 		manager.remove(veiculo);
+		manager.merge(condutor);
 		manager.getTransaction().commit();
 		
 	}
@@ -46,6 +52,35 @@ public class VeiculoDAO {
 	public List<Veiculo> listarVeiculos() {
 		Query query = manager.createQuery("SELECT v FROM Veiculo as v");
 		return query.getResultList();
+		
+	}
+	
+	public void venderVeiculo(Condutor vendedor, Condutor comprador, Veiculo veiculo) {	
+		veiculo.setCondutor(comprador);
+		vendedor.setVeiculo(null);
+		
+		if (comprador.getVeiculo() != null) {
+			String placaAntiga = comprador.getVeiculo().getPlaca();
+			Veiculo veiculoAntigo = manager.find(Veiculo.class, placaAntiga);
+			
+			comprador.setVeiculo(veiculo);
+			
+			manager.getTransaction().begin();
+			manager.merge(vendedor);
+			manager.merge(comprador);
+			manager.merge(veiculo);
+			manager.remove(veiculoAntigo);
+			manager.getTransaction().commit();
+			
+		} else {
+			comprador.setVeiculo(veiculo);
+			
+			manager.getTransaction().begin();
+			manager.merge(vendedor);
+			manager.merge(comprador);
+			manager.merge(veiculo);
+			manager.getTransaction().commit();
+		}
 		
 	}
 }
