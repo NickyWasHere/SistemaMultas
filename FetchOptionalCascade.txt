@@ -1,0 +1,47 @@
+Fetch:
+
+-Afeta a performance de um sistema;
+
+-Pode ser Eager (FetchType.EAGER) ou Lazy (FetchType.LAZY); 
+
+-Eager pega todos os dados de uma só vez, inclusive dados de outras entidades relacionadas;
+
+-Lazy pega apenas os dados da entidade que foi chamada, e só pega os dados de outras entidades relacionadas quando são chamadas;
+
+-Basicamente: Eager pega todos os dados em uma chamada, Lazy pega só os dados necessários em múltiplas chamadas.
+
+
+
+Optional:
+
+-Define se uma entidade relacionada pode ser nula (true) ou não (false);
+
+-Por padrão é true, fazendo assim com que outras entidades relacionadas não precisem necessariamente ter dados salvos;
+
+
+
+Cascade:
+
+-Define como uma entidade afeta outras entidades relacionadas, ou seja, ao alterar dados de uma entidade, outra entidade também terá seus dados afetados;
+
+-JPA tem 6 tipos de cascade -> ALL, PERSIST, MERGE, REMOVE, REFRESH, DETACH;
+
+-O Hibernate ainda suporta 3 outros tipos além dos 6 tipos da JPA -> REPLICATE, SAVE_UPDATE, LOCK;
+
+-ALL -> Propaga todos os tipos de cascade entre entidades (inclusive específicas do Hibernate);
+
+-PERSIST -> Ao salvar uma entidade, a entidade relacionada também será salva no banco de dados;
+
+-MERGE -> Ao atualizar uma entidade, a entidade relacionada também será salva;
+
+-REMOVE -> Ao remover uma entidade, a entidade relacionada também será removida;
+
+-REFRESH -> Ao atualizar uma entidade, a entidade relacionada será recarregada;
+
+-DETACH -> Ao desanexar (remover do contexto persistente) uma entidade, a entidade relacionada também sera desanexada;
+
+-REPLICATE -> Ao replicar (sincronizar de fontes diferentes) uma entidade, replica a entidade relacionada;
+
+-SAVE_UPDATE -> Ao dar save_update (geralmente operações específicas do Hibernate como save, update e saveOrUpdate), faz essa mesma operação com a entidade relacionada;
+
+-LOCK -> Ao reanexar (incluir novamente no contexto persistente) uma entidade, a entidade relacionada também será reanexada.
