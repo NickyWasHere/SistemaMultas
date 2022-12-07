@@ -76,7 +76,7 @@ public class Veiculo {
 
 	@Override
 	public String toString() {
-		return "\nPlaca do veículo: " + placa +
+		return "Placa do veículo: " + placa +
 				"\nCNH associada: " + condutor.getNroCnh() +
 				"\nModelo: " + modelo + " - " + ano +
 				"\nMarca: " + marca;

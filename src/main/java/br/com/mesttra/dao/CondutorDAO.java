@@ -15,6 +15,15 @@ public class CondutorDAO {
 	}
 	
 	public void adicionarCondutor(Condutor condutor) {
+		String nroCnh = condutor.getNroCnh();
+		Condutor condutorCadastrado = manager.find(Condutor.class, nroCnh);
+		
+		if (condutorCadastrado != null) {
+			System.out.println();
+			System.err.println("Esta CNH já está cadastrada");
+			return;
+		}
+		
 		manager.getTransaction().begin();
 		manager.persist(condutor);
 		manager.getTransaction().commit();
@@ -25,6 +34,7 @@ public class CondutorDAO {
 		Condutor condutor = manager.find(Condutor.class, nroCnh);
 		
 		if (condutor == null) {
+			System.out.println();
 			System.err.println("Nenhum condutor encontrado");
 			return;
 		}

@@ -16,6 +16,15 @@ public class VeiculoDAO {
 	}
 	
 	public void adicionarVeiculo(Veiculo veiculo, Condutor condutor) {
+		String placa = veiculo.getPlaca();
+		Veiculo veiculoCadastrado = manager.find(Veiculo.class, placa);
+		
+		if (veiculoCadastrado != null) {
+			System.out.println();
+			System.err.println("Esta placa já está cadastrada");
+			return;
+		}
+		
 		veiculo.setCondutor(condutor);
 		condutor.setVeiculo(veiculo);
 		

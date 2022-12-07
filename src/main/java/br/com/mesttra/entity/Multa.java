@@ -54,7 +54,7 @@ public class Multa {
 
 	@Override
 	public String toString() {
-		return "\nCódigo:" + codigoMulta +
+		return "Código:" + codigoMulta +
 				"\nValor: " + valor +
 				"\nPontuação: " + pontuacao +
 				"\nPlaca associada: " + veiculo.getPlaca();

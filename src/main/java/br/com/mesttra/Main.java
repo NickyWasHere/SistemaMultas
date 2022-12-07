@@ -1,6 +1,5 @@
 package br.com.mesttra;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,7 +14,7 @@ public class Main {
 	private static VeiculoDAO veiculoDAO = new VeiculoDAO();
 	private static MultaDAO multaDAO = new MultaDAO();
 	
-	public static void main(String[] args) {		
+	public static void main(String[] args) {
 		while (true) {
 			int resp = inicio();
 			
