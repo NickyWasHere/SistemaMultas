@@ -20,7 +20,7 @@ public class Condutor {
 	@Column (nullable = false)
 	private int pontuacao;
 	
-	@OneToOne (fetch = FetchType.LAZY)
+	@OneToOne (cascade = CascadeType.REMOVE)
 	@JoinColumn (name = "veiculo_fk", referencedColumnName = "placa")
 	private Veiculo veiculo;
 

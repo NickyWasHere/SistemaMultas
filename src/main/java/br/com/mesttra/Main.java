@@ -386,7 +386,14 @@ public class Main {
 		System.out.print("Placa: ");
 		String placa = sc.next();
 		
+		long inicio = System.nanoTime();
+		long inicio2 = System.nanoTime();
+		
 		Veiculo veiculo = veiculoDAO.verVeiculo(placa);
+		
+		long fim = System.nanoTime();
+		System.out.println("Tempo de carregamento do veículo: " + (fim-inicio));
+		
 		if (veiculo == null) {
 			System.out.println();
 			System.err.println("Nenhum veículo encontrado");
@@ -400,6 +407,9 @@ public class Main {
 				for (Multa m : veiculo.getMultas()) {
 					System.out.println(m);
 				}
+				
+				long fim2 = System.nanoTime();
+				System.out.println("Tempo de listagem: " + (fim2-inicio2));
 			}
 		}
 	}

@@ -19,11 +19,11 @@ public class Veiculo {
 	@Column (nullable = false)
 	private String marca;
 	
-	@OneToOne (fetch = FetchType.LAZY)
+	@OneToOne
 	@JoinColumn (name = "nro_cnh_fk", referencedColumnName = "nro_cnh")
 	private Condutor condutor;
 	
-	@OneToMany (mappedBy = "veiculo", fetch = FetchType.LAZY)
+	@OneToMany (mappedBy = "veiculo", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	private List<Multa> multas;
 
 	public String getPlaca() {

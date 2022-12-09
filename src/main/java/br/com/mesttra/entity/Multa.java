@@ -16,7 +16,7 @@ public class Multa {
 	@Column (nullable = false)
 	private int pontuacao;
 	
-	@ManyToOne (fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn (name = "veiculo_fk", referencedColumnName = "placa")
 	private Veiculo veiculo;
 
